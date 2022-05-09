@@ -154,26 +154,16 @@ with detection_graph.as_default():
           [boxes, scores, classes, num_detections],
           feed_dict={image_tensor: image_np_expanded})
       #print(classes[0,0])
-      center1=((boxes[0,0,1]+boxes[0,0,3])/2)
 
-      identify(classes[0,0],categories,scores[0,0],center1)
-      
-      #if(classes[0,0]==2.0):
-      try:
-      	center2=((boxes[0,1,1]+boxes[0,1,3])/2)
-      	identify(classes[0,1],categories,scores[0,1],center2)
-      	
-      except:
-      	pass
-      #print(image_np.shape)
-      
       j = 0
-      """while True:
-		try:
-			identify(classes[0,j],categories,scores[0,j])
-			j++
+      while(j<6):
+      	try:
+      		center=((boxes[0,j,1]+boxes[0,j,3])/2)
+      		identify(classes[0,j],categories,scores[0,j],center)
+      		j +=1
       	except:
-			break"""
+      		break
+      
       #print(classes)
       print('-------------------')
       #	print('Bicycle')
