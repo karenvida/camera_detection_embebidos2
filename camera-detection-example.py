@@ -58,7 +58,7 @@ PATH_TO_LABELS = os.path.join('data', 'mscoco_label_map.pbtxt')
 
 NUM_CLASSES = 90
 
-def identify(id,categories,scores,center):
+def identify(id,categories,scores,center,centery,image_np):
 	for i in range(len(categories)):
 		if(categories[i]['id']==id):
 			if(scores>0.5):
@@ -69,6 +69,8 @@ def identify(id,categories,scores,center):
 					print('Center')
 				if(center>0.66):
 					print('Right')
+				image_np = cv2.circle(image_np, (int(center*image_np.shape[1]),int(centery*image_np.shape[0])), 10, (0,0,255),5)
+			return image_np
 			#print(':: ',)
 # ## Download Model
 
@@ -158,8 +160,10 @@ with detection_graph.as_default():
       j = 0
       while(j<6):
       	try:
-      		center=((boxes[0,j,1]+boxes[0,j,3])/2)
-      		identify(classes[0,j],categories,scores[0,j],center)
+      		centery=((boxes[0,j,0]+boxes[0,j,2])/2)
+      		centerx=((boxes[0,j,1]+boxes[0,j,3])/2)
+      		#image_np = cv2.circle(image_np, (int(centerx*image_np.shape[1]),int(centery*image_np.shape[0])), 10, (0,0,255),5)
+      		identify(classes[0,j],categories,scores[0,j],centerx,centery,image_np)
       		j +=1
       	except:
       		break
